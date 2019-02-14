@@ -15,3 +15,13 @@ h1, h2 {
 .hide {
   display: none;
 }
+
+.enemies img {
+  background: red;
+  border: red 1px solid;
+}
+
+#selected-character img {
+  background: green;
+  border: green 1px solid;
+}
