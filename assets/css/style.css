@@ -16,9 +16,14 @@ h1, h2 {
   display: none;
 }
 
-.enemies img {
+.enemy img {
   background: red;
   border: red 1px solid;
+}
+
+.defender img {
+  background: blue;
+  border: blue 1px solid;
 }
 
 #selected-character img {
