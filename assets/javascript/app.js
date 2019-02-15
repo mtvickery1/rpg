@@ -5,16 +5,17 @@ var enemies;
 var selectedCharacter;
 
 // Character Constructor
-function Character(name, health) {
+function Character(name, health, damage) {
   this.name = name;
   this.health = health;
+  this.damage = damage;
 }
 
 // Characters
-var amanda = new Character("amanda", 150);
-var kate = new Character("kate", 130);
-var ricardo = new Character("ricardo", 180);
-var mason = new Character("mason", 200);
+var amanda = new Character("amanda", 100, 14);
+var kate = new Character("kate", 120, 8);
+var ricardo = new Character("ricardo", 150, 8);
+var mason = new Character("mason", 180, 7);
 
 // Health
 var amandaHealthDiv = $("#amanda-health");
@@ -36,11 +37,8 @@ $(".character").on("click", function () {
     selectedCharacter = this;
     $(selectedCharacter).attr("id", "selected-character");
 
-    console.log('selectedCharacter:', selectedCharacter)
-
     // Set enemies var before moving #selected-character
     enemies = $(this).siblings()
-    console.log('enemies:', enemies)
 
     // Move #selected-character to #your-character
     $(selectedCharacter).appendTo("#your-character");
@@ -75,3 +73,29 @@ $("#enemies").on("click", ".enemy", function () {
     // Call a function to begin fighting...or not, make on click
   }
 });
+
+// Attack Button Function
+$("#attack-button").on("click", function () {
+
+  if (defenderSelected === true) {
+
+  console.log("attack");
+
+  // #selected-character attacks .defender
+  // display enemy attacked
+  // update then display damage done
+  // update then display new enemy health
+  // check if defender health is === 0...
+  // if so, check if defendersDefeated === 3...
+  // if so, you win
+
+  // .defender attacks #selected-character
+  // update then display damage done to you
+  // update then display your new health
+  // check if your health is === 0...
+  // if so, you lose
+
+  // 
+
+  }
+})
