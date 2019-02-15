@@ -1,23 +1,25 @@
 // Global Variables
 var characterSelected = false;
 var defenderSelected = false;
+var gameOver = false;
 
 var enemies;
 var selectedCharacter;
 var defender;
 
 // Character Constructor
-function Character(name, health, damage) {
+function Character(name, health, damage, counter) {
   this.name = name;
   this.health = health;
   this.damage = damage;
+  this.counter = counter;
 }
 
 // Characters
-var amanda = new Character("amanda", 100, 14);
-var kate = new Character("kate", 120, 8);
-var ricardo = new Character("ricardo", 150, 8);
-var mason = new Character("mason", 180, 7);
+var amanda = new Character("amanda", 100, 14, 5);
+var kate = new Character("kate", 120, 8, 15);
+var ricardo = new Character("ricardo", 150, 8, 20);
+var mason = new Character("mason", 180, 7, 25);
 var characterArray = [amanda, kate, ricardo, mason];
 
 // Health
@@ -100,30 +102,21 @@ $("#attack-button").on("click", function () {
 
   if (defenderSelected === true) {
 
-    console.log("attack");
-
-
-    console.log('defender:', defender)
-
     // #selected-character attacks .defender
     attackDefender()
-    // update damage done
-    // updateDamage()
-    // // display damage done
-    // displayDamage()
-    // // update new enemy health
-    // updateHealth()
-    // // display new enemy health
-    // displayHealth()
-    // // display enemy attacked
+
     // // check if defender health is === 0...
+    // checkDefenderHealth()
     // // if so, check if defendersDefeated === 3...
     // // if so, you win
 
-    // // .defender attacks #selected-character
-    // defenderAttacks()
-    // update then display your new health
-    // update then display damage done to you
+    if (gameOver === false) {
+      // .defender attacks #selected-character
+      defenderAttack()
+
+    }
+    // display info
+    displayInfo()
     // check if your health is === 0...
     // if so, you lose
 
@@ -131,7 +124,33 @@ $("#attack-button").on("click", function () {
 })
 
 function attackDefender() {
-  console.log('defender health before attack:', defender.health)
+  // update health after attack
   defender.health = defender.health - selectedCharacter.damage
-  console.log('defender health after attack:', defender.health)
 }
+
+function defenderAttack() {
+  // update health after attack
+  selectedCharacter.health = selectedCharacter.health - defender.counter
+}
+
+function displayInfo() {
+
+  // #selected-character attacks .defender
+  var attackerInfo = $("<div class='col-12'>You attacked " + defender.name + " for " + selectedCharacter.damage + " damage.</div>");
+
+  // .defender attacks #selected-character
+  var defenderInfo = $("<div class='col-12'>" + defender.name + " attacked you back for " + defender.counter + " damage.</div>");
+
+  // Empty #info
+  $("#info").empty();
+
+  // Append info to #info
+  $(attackerInfo).appendTo("#info");
+  $(defenderInfo).appendTo("#info");
+
+  // display new enemy health
+  amandaHealthDiv.text(amanda.health);
+  kateHealthDiv.text(kate.health);
+  ricardoHealthDiv.text(ricardo.health);
+  masonHealthDiv.text(mason.health);
+} 
