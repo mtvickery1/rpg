@@ -1,4 +1,8 @@
+////////////////////////////////////////////////////////////////////////
+
+
 // Global Variables
+////////////////////////////////////////////////////////////////////////
 var characterSelected = false;
 var defenderSelected = false;
 var gameOver = false;
@@ -6,6 +10,11 @@ var gameOver = false;
 var enemies;
 var selectedCharacter;
 var defender;
+
+var enemiesDefeated = 0;
+var initialAttackPower;
+
+var defenderDiv;
 
 // Character Constructor
 function Character(name, health, damage, counter) {
@@ -33,7 +42,11 @@ amandaHealthDiv.text(amanda.health);
 kateHealthDiv.text(kate.health);
 ricardoHealthDiv.text(ricardo.health);
 masonHealthDiv.text(mason.health);
+////////////////////////////////////////////////////////////////////////
 
+
+// On Click Events
+////////////////////////////////////////////////////////////////////////
 // Character/Enemy Selection
 $(".character").on("click", function () {
 
@@ -54,6 +67,8 @@ $(".character").on("click", function () {
     characterArray.forEach(function (characterObject) {
       if (characterObject.name === selectedCharacter) {
         selectedCharacter = characterObject;
+        // Stores initial attack power of defender
+        initialAttackPower = selectedCharacter.damage;
       }
     });
 
@@ -70,8 +85,6 @@ $(".character").on("click", function () {
 // Choose Enemy to Attack
 $("#enemies").on("click", ".enemy", function () {
 
-  console.log("clicked")
-
   // Prevents multiple defenders from being selected
   if (defenderSelected === false) {
 
@@ -81,6 +94,9 @@ $("#enemies").on("click", ".enemy", function () {
     // Adding defender class for blue border
     $(this).removeClass("enemy").addClass("defender");
 
+    // Setting defenderDiv = this to hide later
+    defenderDiv = this;
+
     defenderSelected = true;
 
     // Sets defender = chosen defender
@@ -88,12 +104,10 @@ $("#enemies").on("click", ".enemy", function () {
     characterArray.forEach(function (defenderObject) {
       if (defenderObject.name === defender) {
         console.log(defender);
+        // Sets defender = defender object
         defender = defenderObject;
       }
     });
-
-
-    // Call a function to begin fighting...or not, make on click
   }
 });
 
@@ -102,27 +116,46 @@ $("#attack-button").on("click", function () {
 
   if (defenderSelected === true) {
 
+
     // #selected-character attacks .defender
     attackDefender()
 
-    // // check if defender health is === 0...
-    // checkDefenderHealth()
-    // // if so, check if defendersDefeated === 3...
-    // // if so, you win
-
-    if (gameOver === false) {
+    // check if defender health is === 0
+    checkDefenderHealth()
+    console.log(defenderSelected);
+    if (defenderSelected === true) {
       // .defender attacks #selected-character
       defenderAttack()
-
     }
-    // display info
-    displayInfo()
+
+    // *****************************************************************
     // check if your health is === 0...
+    // checkYourHealth()
     // if so, you lose
 
+    if (defenderSelected === true) {
+      // display info
+      displayInfo()
+    }
+
+    // Increase attack damage each attack
+    selectedCharacter.damage = selectedCharacter.damage + initialAttackPower
+    console.log('initialAttackPower:', initialAttackPower)
+    console.log("damage", selectedCharacter.damage);
+
+  } else {
+    // Empty #info
+    $("#info").empty();
+
+    var noEnemy = $("<div class='col-12'>No enemy here.</div>");
+    $(noEnemy).appendTo("#info");
   }
 })
+////////////////////////////////////////////////////////////////////////
 
+
+// Functions
+////////////////////////////////////////////////////////////////////////
 function attackDefender() {
   // update health after attack
   defender.health = defender.health - selectedCharacter.damage
@@ -133,8 +166,43 @@ function defenderAttack() {
   selectedCharacter.health = selectedCharacter.health - defender.counter
 }
 
-function displayInfo() {
+function checkDefenderHealth() {
+  if (defender.health <= 0) {
+    enemiesDefeated++
+    defenderSelected = false;
+    $(defenderDiv).attr("class", "hide");
 
+    // Enemy Defeated
+    if (enemiesDefeated < 3) {
+      console.log('enemiesDefeated:', enemiesDefeated)
+      console.log("enemy defeated");
+      console.log('defenderSelected:', defenderSelected)
+      // Empty #info
+      $("#info").empty();
+      // Display you defeated an enemy
+      var enemyDefeated = $("<div class='col-12'>You have defeated " + defender.name + ", you can choose to fight another enemy.</div>");
+      $(enemyDefeated).appendTo("#info");
+    }
+
+    // Check if game over
+    if (enemiesDefeated === 3) {
+      // Empty #info
+      $("#info").empty();
+      // Display you defeated an enemy
+      var winDiv = $("<div class='col-12'>Game Over. You Win!</div>");
+      $(winDiv).appendTo("#info");
+      gameOver = true;
+    }
+  }
+}
+
+
+
+
+
+
+
+function displayInfo() {
   // #selected-character attacks .defender
   var attackerInfo = $("<div class='col-12'>You attacked " + defender.name + " for " + selectedCharacter.damage + " damage.</div>");
 
