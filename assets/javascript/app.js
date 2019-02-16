@@ -192,6 +192,9 @@ function checkDefenderHealth() {
       var winDiv = $("<div class='col-12'>Game Over. You Win!</div>");
       $(winDiv).appendTo("#info");
       gameOver = true;
+
+      // Create Restart Button
+      reset();
     }
   }
 }
@@ -222,3 +225,11 @@ function displayInfo() {
   ricardoHealthDiv.text(ricardo.health);
   masonHealthDiv.text(mason.health);
 } 
+
+function reset() {
+  var resetButton = $("#reset");
+  $(resetButton).css("display", "inline");
+  $("#reset").on("click", function () {
+    location.reload();
+  });
+}

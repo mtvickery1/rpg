@@ -39,3 +39,7 @@ h2 {
   background: green;
   border: green 1px solid;
 }
+
+#reset {
+  display: none;
+}
