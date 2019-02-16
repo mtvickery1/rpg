@@ -5,7 +5,8 @@
 ////////////////////////////////////////////////////////////////////////
 var characterSelected = false;
 var defenderSelected = false;
-var gameOver = false;
+var youLose = false;
+var youWin = false;
 
 var enemies;
 var selectedCharacter;
@@ -114,43 +115,51 @@ $("#enemies").on("click", ".enemy", function () {
 // Attack Button Function
 $("#attack-button").on("click", function () {
 
-  if (defenderSelected === true) {
-
-
-    // #selected-character attacks .defender
-    attackDefender()
-
-    // check if defender health is === 0
-    checkDefenderHealth()
-    console.log(defenderSelected);
+  if (youLose === false && youWin === false) {
     if (defenderSelected === true) {
-      // .defender attacks #selected-character
-      defenderAttack()
+
+
+      // #selected-character attacks .defender
+      attackDefender()
+
+      // check if defender health is === 0
+      checkDefenderHealth()
+      console.log(defenderSelected);
+      if (defenderSelected === true) {
+        // .defender attacks #selected-character
+        defenderAttack()
+      }
+
+      // *****************************************************************
+      // check if your health is === 0...
+      checkYourHealth()
+      console.log(youLose);
+      if (youLose === true) {
+        youLost()
+        return
+      }
+      console.log("does this happen?");
+      // if so, you lose
+
+      if (defenderSelected === true) {
+        // display info
+        displayInfo()
+      }
+
+      // Increase attack damage each attack
+      selectedCharacter.damage = selectedCharacter.damage + initialAttackPower
+      console.log('initialAttackPower:', initialAttackPower)
+      console.log("damage", selectedCharacter.damage);
+
+    } else {
+      // Empty #info
+      $("#info").empty();
+
+      var noEnemy = $("<div class='col-12'>No enemy here.</div>");
+      $(noEnemy).appendTo("#info");
     }
-
-    // *****************************************************************
-    // check if your health is === 0...
-    // checkYourHealth()
-    // if so, you lose
-
-    if (defenderSelected === true) {
-      // display info
-      displayInfo()
-    }
-
-    // Increase attack damage each attack
-    selectedCharacter.damage = selectedCharacter.damage + initialAttackPower
-    console.log('initialAttackPower:', initialAttackPower)
-    console.log("damage", selectedCharacter.damage);
-
-  } else {
-    // Empty #info
-    $("#info").empty();
-
-    var noEnemy = $("<div class='col-12'>No enemy here.</div>");
-    $(noEnemy).appendTo("#info");
   }
-})
+});
 ////////////////////////////////////////////////////////////////////////
 
 
@@ -191,16 +200,34 @@ function checkDefenderHealth() {
       // Display you defeated an enemy
       var winDiv = $("<div class='col-12'>Game Over. You Win!</div>");
       $(winDiv).appendTo("#info");
-      gameOver = true;
+      youWin = true;
 
-      // Create Restart Button
+      // Display Restart Button
       reset();
     }
   }
 }
 
+function checkYourHealth() {
+  if (selectedCharacter.health <= 0) {
+    // Set to 0 for display
+    selectedCharacter.health = 0;
+    // You lost
+    youLose = true;
+  }
+}
 
+function youLost() {
+  // Empty #info
+  $("#info").empty();
+  // Display you lost
+  var lossDiv = $("<div class='col-12'>Game Over. You Lost!</div>");
+  $(lossDiv).appendTo("#info");
 
+  updateHealth()
+  // Display Restart Button
+  reset();
+}
 
 
 
@@ -219,12 +246,8 @@ function displayInfo() {
   $(attackerInfo).appendTo("#info");
   $(defenderInfo).appendTo("#info");
 
-  // display new enemy health
-  amandaHealthDiv.text(amanda.health);
-  kateHealthDiv.text(kate.health);
-  ricardoHealthDiv.text(ricardo.health);
-  masonHealthDiv.text(mason.health);
-} 
+  updateHealth()
+}
 
 function reset() {
   var resetButton = $("#reset");
@@ -232,4 +255,12 @@ function reset() {
   $("#reset").on("click", function () {
     location.reload();
   });
+}
+
+function updateHealth() {
+  // display new enemy health
+  amandaHealthDiv.text(amanda.health);
+  kateHealthDiv.text(kate.health);
+  ricardoHealthDiv.text(ricardo.health);
+  masonHealthDiv.text(mason.health);
 }
