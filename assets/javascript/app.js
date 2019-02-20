@@ -23,7 +23,7 @@ function Character(name, health, damage, counter) {
   this.health = health;
   this.damage = damage;
   this.counter = counter;
-}
+};
 
 // Characters
 var amanda = new Character("amanda", 100, 14, 5);
@@ -57,7 +57,7 @@ $(".character").on("click", function () {
     $(selectedCharacter).attr("id", "selected-character");
 
     // Set enemies var before moving #selected-character
-    enemies = $(this).siblings()
+    enemies = $(this).siblings();
 
     // Move #selected-character to #your-character
     $(selectedCharacter).appendTo("#your-character");
@@ -70,7 +70,7 @@ $(".character").on("click", function () {
         selectedCharacter = characterObject;
         // Stores initial attack power of defender
         initialAttackPower = selectedCharacter.damage;
-      }
+      };
     });
 
     // Hide Character Select Section
@@ -80,7 +80,7 @@ $(".character").on("click", function () {
     $(enemies).appendTo("#enemies");
     // Add enemies class
     $("#enemies").children().addClass("enemy");
-  }
+  };
 });
 
 // Choose Enemy to Attack
@@ -106,9 +106,9 @@ $("#enemies").on("click", ".enemy", function () {
       if (defenderObject.name === defender) {
         // Sets defender = defender object
         defender = defenderObject;
-      }
+      };
     });
-  }
+  };
 });
 
 // Attack Button Function
@@ -117,29 +117,27 @@ $("#attack-button").on("click", function () {
   if (youLose === false && youWin === false) {
     if (defenderSelected === true) {
 
-
       // #selected-character attacks .defender
-      attackDefender()
+      attackDefender();
 
       // check if defender health is === 0
       checkDefenderHealth()
       if (defenderSelected === true) {
         // .defender attacks #selected-character
-        defenderAttack()
-      }
+        defenderAttack();
+      };
 
-      // *****************************************************************
       // check if your health is === 0...
-      checkYourHealth()
+      checkYourHealth();
       if (youLose === true) {
-        youLost()
+        youLost();
         return
-      }
+      };
 
       if (defenderSelected === true) {
         // display info
-        displayInfo()
-      }
+        displayInfo();
+      };
 
       // Increase attack damage each attack
       selectedCharacter.damage = selectedCharacter.damage + initialAttackPower
@@ -150,8 +148,8 @@ $("#attack-button").on("click", function () {
 
       var noEnemy = $("<div class='col-12'>No enemy here.</div>");
       $(noEnemy).appendTo("#info");
-    }
-  }
+    };
+  };
 });
 ////////////////////////////////////////////////////////////////////////
 
@@ -161,12 +159,12 @@ $("#attack-button").on("click", function () {
 function attackDefender() {
   // update health after attack
   defender.health = defender.health - selectedCharacter.damage
-}
+};
 
 function defenderAttack() {
   // update health after attack
   selectedCharacter.health = selectedCharacter.health - defender.counter
-}
+};
 
 function checkDefenderHealth() {
   if (defender.health <= 0) {
@@ -181,7 +179,7 @@ function checkDefenderHealth() {
       // Display you defeated an enemy
       var enemyDefeated = $("<div class='col-12'>You have defeated " + defender.name + ", you can choose to fight another enemy.</div>");
       $(enemyDefeated).appendTo("#info");
-    }
+    };
 
     // Check if game over
     if (enemiesDefeated === 3) {
@@ -194,9 +192,9 @@ function checkDefenderHealth() {
 
       // Display Restart Button
       reset();
-    }
-  }
-}
+    };
+  };
+};
 
 function checkYourHealth() {
   if (selectedCharacter.health <= 0) {
@@ -204,8 +202,8 @@ function checkYourHealth() {
     selectedCharacter.health = 0;
     // You lost
     youLose = true;
-  }
-}
+  };
+};
 
 function youLost() {
   // Empty #info
@@ -214,13 +212,10 @@ function youLost() {
   var lossDiv = $("<div class='col-12'>Game Over. You Lost!</div>");
   $(lossDiv).appendTo("#info");
 
-  updateHealth()
+  updateHealth();
   // Display Restart Button
   reset();
-}
-
-
-
+};
 
 function displayInfo() {
   // #selected-character attacks .defender
@@ -236,8 +231,8 @@ function displayInfo() {
   $(attackerInfo).appendTo("#info");
   $(defenderInfo).appendTo("#info");
 
-  updateHealth()
-}
+  updateHealth();
+};
 
 function reset() {
   var resetButton = $("#reset");
@@ -245,7 +240,7 @@ function reset() {
   $("#reset").on("click", function () {
     location.reload();
   });
-}
+};
 
 function updateHealth() {
   // display new enemy health
@@ -253,4 +248,4 @@ function updateHealth() {
   kateHealthDiv.text(kate.health);
   ricardoHealthDiv.text(ricardo.health);
   masonHealthDiv.text(mason.health);
-}
+};

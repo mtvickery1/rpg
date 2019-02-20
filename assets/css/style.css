@@ -4,6 +4,10 @@ body {
   color: white;
 }
 
+.hide {
+  display: none;
+}
+
 img {
   height: auto;
   width: 100px;
@@ -17,8 +21,9 @@ h2 {
   font-size: 25px;
 }
 
-.hide {
-  display: none;
+#selected-character img {
+  background: green;
+  border: green 1px solid;
 }
 
 .enemy img {
@@ -29,13 +34,4 @@ h2 {
 .defender img {
   background: blue;
   border: blue 1px solid;
-}
-
-#selected-character img {
-  background: green;
-  border: green 1px solid;
-}
-
-#reset {
-  display: none;
 }
