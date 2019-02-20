@@ -104,7 +104,6 @@ $("#enemies").on("click", ".enemy", function () {
     defender = $(this).children()[1].name;
     characterArray.forEach(function (defenderObject) {
       if (defenderObject.name === defender) {
-        console.log(defender);
         // Sets defender = defender object
         defender = defenderObject;
       }
@@ -124,7 +123,6 @@ $("#attack-button").on("click", function () {
 
       // check if defender health is === 0
       checkDefenderHealth()
-      console.log(defenderSelected);
       if (defenderSelected === true) {
         // .defender attacks #selected-character
         defenderAttack()
@@ -133,13 +131,10 @@ $("#attack-button").on("click", function () {
       // *****************************************************************
       // check if your health is === 0...
       checkYourHealth()
-      console.log(youLose);
       if (youLose === true) {
         youLost()
         return
       }
-      console.log("does this happen?");
-      // if so, you lose
 
       if (defenderSelected === true) {
         // display info
@@ -148,8 +143,6 @@ $("#attack-button").on("click", function () {
 
       // Increase attack damage each attack
       selectedCharacter.damage = selectedCharacter.damage + initialAttackPower
-      console.log('initialAttackPower:', initialAttackPower)
-      console.log("damage", selectedCharacter.damage);
 
     } else {
       // Empty #info
@@ -183,9 +176,6 @@ function checkDefenderHealth() {
 
     // Enemy Defeated
     if (enemiesDefeated < 3) {
-      console.log('enemiesDefeated:', enemiesDefeated)
-      console.log("enemy defeated");
-      console.log('defenderSelected:', defenderSelected)
       // Empty #info
       $("#info").empty();
       // Display you defeated an enemy
